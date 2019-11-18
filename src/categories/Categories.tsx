@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Category, fetchCategories } from "../api/theMealDb";
 import CategoryThumbnail from "./CategoryThumbnail";
-
-let cachedCategories: Category[];
+import styles from "./Categories.module.scss";
 
 enum LoadingState {
   PENDING,
@@ -18,15 +17,22 @@ const Categories: React.FC = () => {
 
   useEffect(() => {
     const fetchIfNeeded = async () => {
-      if (!cachedCategories) {
+      let storedCategories = localStorage.getItem("storedCategories");
+      let categories: Category[] = [];
+
+      if (storedCategories) {
+        categories = JSON.parse(storedCategories);
+        setLoadingState(LoadingState.DONE);
+      } else {
         try {
-          cachedCategories = await fetchCategories();
+          categories = await fetchCategories();
+          localStorage.setItem("storedCategories", JSON.stringify(categories));
           setLoadingState(LoadingState.DONE);
         } catch {
           setLoadingState(LoadingState.ERROR);
         }
       }
-      setCategories(cachedCategories);
+      setCategories(categories);
     };
     fetchIfNeeded();
   }, []);
@@ -34,9 +40,9 @@ const Categories: React.FC = () => {
   switch (loadingState) {
     case LoadingState.DONE:
       return (
-        <ul>
+        <ul className={styles.list}>
           {categories.map(category => (
-            <li>
+            <li key={category.idCategory} className={styles.listItem}>
               <CategoryThumbnail category={category} />
             </li>
           ))}

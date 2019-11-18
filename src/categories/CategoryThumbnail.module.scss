@@ -1,0 +1,24 @@
+@import "../shared/settings.core";
+
+.link {
+  display: flex;
+  flex-direction: column;
+
+  background: white;
+  color: get-color("salem");
+
+  text-decoration: none;
+  font-family: get-font("pacifico");
+  text-align: center;
+
+  padding: 10px;
+  margin: 10px;
+
+  border-radius: 3px;
+}
+
+.thumb {
+  max-width: 180px;
+  box-shadow: 0 0 15px 1px black;
+  margin: 10px 0 10px 0;
+}

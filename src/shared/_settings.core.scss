@@ -1,16 +1,20 @@
 $fonts: (
-    pacifico: ('Pacifico', cursive)
+  pacifico: (
+    "Pacifico",
+    cursive
+  )
 );
 
 @function get-font($font) {
-    @return map-get($fonts, $font);
+  @return map-get($fonts, $font);
 }
 
 $colors: (
-    firefly: #113333,
-    negroni: #ffe4c4
+  firefly: #113333,
+  negroni: #ffe4c4,
+  salem: #086f2c
 );
 
 @function get-color($color) {
-    @return map-get($colors, $color);
+  @return map-get($colors, $color);
 }

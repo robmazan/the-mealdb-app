@@ -1,13 +1,22 @@
-import React, { Fragment } from "react";
+import React from "react";
+import { Link } from "react-router-dom";
 import { Category } from "../api/theMealDb";
+import styles from "./CategoryThumbnail.module.scss";
 
 const CategoryThumbnail: React.FC<{ category: Category }> = ({ category }) => {
   return (
-    <Fragment key={category.idCategory}>
-      <span title={category.strCategoryDescription}>
-        {category.strCategory}
-      </span>
-    </Fragment>
+    <Link
+      className={styles.link}
+      title={category.strCategoryDescription}
+      to={`/category/${category.idCategory}`}
+    >
+      <img
+        className={styles.thumb}
+        src={category.strCategoryThumb}
+        alt={`Thumbnail for ${category.strCategory}`}
+      />
+      {category.strCategory}
+    </Link>
   );
 };
 
