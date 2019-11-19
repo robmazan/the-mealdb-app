@@ -70,20 +70,32 @@ export interface Category {
   strCategoryDescription: string;
 }
 
-export const searchByName = (name: string): Promise<Meal[]> =>
+export const searchByName = (
+  name: string,
+  signal?: AbortSignal
+): Promise<Meal[]> =>
   fetch(
     `https://www.themealdb.com/api/json/v1/${API_KEY}/search.php?s=${encodeURIComponent(
       name
-    )}`
+    )}`,
+    {
+      ...(signal ? { signal } : {})
+    }
   )
     .then(res => res.json())
     .then(res => res.meals);
 
-export const searchByFirstLetter = (firstLetter: string): Promise<Meal[]> =>
+export const searchByFirstLetter = (
+  firstLetter: string,
+  signal?: AbortSignal
+): Promise<Meal[]> =>
   fetch(
     `https://www.themealdb.com/api/json/v1/${API_KEY}/search.php?f=${encodeURIComponent(
       firstLetter
-    )}`
+    )}`,
+    {
+      ...(signal ? { signal } : {})
+    }
   )
     .then(res => res.json())
     .then(res => res.meals);
@@ -103,21 +115,28 @@ export const searchByCategoryName = (
     .then(res => res.json())
     .then(res => res.meals);
 
-export const findById = (id: number): Promise<Meal> =>
+export const findById = (id: number, signal?: AbortSignal): Promise<Meal> =>
   fetch(
     `https://www.themealdb.com/api/json/v1/${API_KEY}/lookup.php?i=${encodeURIComponent(
       id
-    )}`
+    )}`,
+    {
+      ...(signal ? { signal } : {})
+    }
   )
     .then(res => res.json())
     .then(res => res.meals[0]);
 
-export const fetchRandom = (): Promise<Meal> =>
-  fetch(`https://www.themealdb.com/api/json/v1/${API_KEY}/random.php`)
+export const fetchRandom = (signal?: AbortSignal): Promise<Meal> =>
+  fetch(`https://www.themealdb.com/api/json/v1/${API_KEY}/random.php`, {
+    ...(signal ? { signal } : {})
+  })
     .then(res => res.json())
     .then(res => res.meals[0]);
 
-export const fetchCategories = (): Promise<Category[]> =>
-  fetch(`https://www.themealdb.com/api/json/v1/${API_KEY}/categories.php`)
+export const fetchCategories = (signal?: AbortSignal): Promise<Category[]> =>
+  fetch(`https://www.themealdb.com/api/json/v1/${API_KEY}/categories.php`, {
+    ...(signal ? { signal } : {})
+  })
     .then(res => res.json())
     .then(res => res.categories);
