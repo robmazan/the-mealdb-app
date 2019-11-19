@@ -86,10 +86,18 @@ it("caches categories", async () => {
     render(<Categories />, container);
   });
 
+  // For testing re-fetch we need a new container, otherwise
+  // ReactDOM wouldn't re-render as the component output is the same
+  const otherContainer = document.createElement("div");
+  document.body.appendChild(otherContainer);
+
   // shouldn't re-fetch on second render but use the cached value
   await act(async () => {
-    render(<Categories />, container);
+    render(<Categories />, otherContainer);
   });
 
   expect(fetchMock.mock.calls.length).toEqual(1);
+
+  unmountComponentAtNode(otherContainer);
+  otherContainer.remove();
 });
