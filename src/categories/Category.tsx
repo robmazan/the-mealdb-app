@@ -62,6 +62,8 @@ const Category: React.FC = () => {
                   label={meal.strMeal}
                   imgSrc={meal.strMealThumb}
                   imgAlt={meal.strMeal}
+                  imgWidth={180}
+                  imgHeight={180}
                 />
               </li>
             ))}

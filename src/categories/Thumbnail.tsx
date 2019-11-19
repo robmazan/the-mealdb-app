@@ -8,6 +8,8 @@ type ThumbnailProps = {
   tooltip?: string;
   imgSrc: string;
   imgAlt: string;
+  imgWidth?: number;
+  imgHeight?: number;
 };
 
 const Thumbnail: React.FC<ThumbnailProps> = ({
@@ -15,11 +17,17 @@ const Thumbnail: React.FC<ThumbnailProps> = ({
   label,
   tooltip,
   imgSrc,
-  imgAlt
+  imgAlt,
+  imgWidth,
+  imgHeight
 }) => {
+  const dimensions = {
+    ...(imgWidth ? { width: `${imgWidth}px` } : {}),
+    ...(imgHeight ? { height: `${imgHeight}px` } : {})
+  };
   return (
     <Link className={styles.link} title={tooltip} to={to}>
-      <img className={styles.thumb} src={imgSrc} alt={imgAlt} />
+      <img className={styles.thumb} src={imgSrc} alt={imgAlt} {...dimensions} />
       {label}
     </Link>
   );

@@ -8,7 +8,7 @@ const Category = React.lazy(() => import("./categories/Category"));
 const App: React.FC = () => {
   return (
     <Router>
-      <header>
+      <header className={styles.header}>
         <Link to="/" className={styles.logoText}>
           The Meal DB
         </Link>

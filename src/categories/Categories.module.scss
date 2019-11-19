@@ -1,7 +1,15 @@
+@import "../shared/settings.core";
+
+.pageTitle {
+  text-align: center;
+  font-family: get-font("lobster");
+  font-weight: normal;
+}
 .list {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+  padding: 0;
 }
 .listItem {
   list-style-type: none;

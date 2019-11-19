@@ -1,6 +1,6 @@
 @import "../shared/settings.core";
 
-$thumbnailImageWidth: 180px;
+$thumbnailImageSize: 180px;
 
 .pageTitle {
   text-align: center;
@@ -11,8 +11,9 @@ $thumbnailImageWidth: 180px;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+  padding: 0;
 }
 .listItem {
   list-style-type: none;
-  width: $thumbnailImageWidth + 40px;
+  width: $thumbnailImageSize + 40px;
 }

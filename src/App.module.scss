@@ -5,6 +5,14 @@
   color: get-color("negroni");
 }
 
+.header::after {
+  content: "";
+  box-shadow: 0 4px 2px;
+  height: 2px;
+  width: 100%;
+  display: block;
+}
+
 .logoText {
   font-family: get-font("pacifico");
   font-size: 5vh;
