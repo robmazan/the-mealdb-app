@@ -1,3 +1,6 @@
+/* istanbul ignore file */
+// Excluding this file from coverage report, as it only contains an API wrapper,
+// without any additional logic,so testing it would be basically like testing fetch...
 const API_KEY = process.env.REACT_APP_MEALDB_API_KEY || 1;
 
 export interface Meal {
