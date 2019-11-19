@@ -1,8 +1,9 @@
-import React from "react";
+import React, { Suspense } from "react";
 import styles from "./App.module.scss";
-import Categories from "./categories/Categories";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-import Category from "./categories/Category";
+
+const Categories = React.lazy(() => import("./categories/Categories"));
+const Category = React.lazy(() => import("./categories/Category"));
 
 const App: React.FC = () => {
   return (
@@ -13,14 +14,16 @@ const App: React.FC = () => {
         </Link>
       </header>
       <main>
-        <Switch>
-          <Route exact path="/">
-            <Categories />
-          </Route>
-          <Route path="/category/:categoryName">
-            <Category />
-          </Route>
-        </Switch>
+        <Suspense fallback={<div>Loading...</div>}>
+          <Switch>
+            <Route exact path="/">
+              <Categories />
+            </Route>
+            <Route path="/category/:categoryName">
+              <Category />
+            </Route>
+          </Switch>
+        </Suspense>
       </main>
     </Router>
   );
