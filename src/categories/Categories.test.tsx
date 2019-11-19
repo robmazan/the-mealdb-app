@@ -1,78 +1,95 @@
+import { GlobalWithFetchMock, MockResponseInit } from "jest-fetch-mock";
 import React from "react";
 import { render, unmountComponentAtNode } from "react-dom";
 import { act } from "react-dom/test-utils";
 import Categories from "./Categories";
-import { Category } from "../api/theMealDb";
+
+const customGlobal: GlobalWithFetchMock = global as GlobalWithFetchMock;
+customGlobal.fetch = require("jest-fetch-mock");
+const fetchMock = customGlobal.fetch;
 
 jest.mock("./CategoryThumbnail");
 
-let container: HTMLElement = null;
+let container: HTMLElement | null = null;
 beforeEach(() => {
-  // setup a DOM element as a render target
+  fetchMock.resetMocks();
   container = document.createElement("div");
   document.body.appendChild(container);
 });
 
 afterEach(() => {
   // cleanup on exiting
-  unmountComponentAtNode(container);
-  container.remove();
+  if (container) {
+    unmountComponentAtNode(container);
+  }
+  container!.remove();
   container = null;
   localStorage.clear();
 });
 
-it("renders categories", async () => {
-  const fakeCategory: Category = {
-    idCategory: 1,
-    strCategory: "Mock category",
-    strCategoryDescription: "Mock description",
-    strCategoryThumb: "https://example.com/thumb.jpg"
-  };
+it("shows loading message", async () => {
+  const mockPromise = new Promise<MockResponseInit>(resolve => {});
+
+  fetchMock.mockResponseOnce(() => mockPromise);
+
+  await act(async () => {
+    render(<Categories />, container);
+  });
+
+  expect(container!.innerHTML).toContain("Loading");
+});
+
+it("renders category", async () => {
+  const fakeCategory = require("./__mocks__/fakeCategory.json");
   const fakeResponse = {
     categories: [fakeCategory]
   };
-  let mockResolve;
+  fetchMock.mockResponseOnce(JSON.stringify(fakeResponse));
 
-  const mockPromise = new Promise(resolve => {
-    mockResolve = resolve;
-  });
-
-  jest.spyOn(global, "fetch").mockImplementation(() => mockPromise);
-
-  // Use the asynchronous version of act to apply resolved promises
   await act(async () => {
     render(<Categories />, container);
   });
 
-  expect(container.innerHTML).toContain("Loading");
+  const mockHTMLContent = container!.querySelector("code");
 
-  await act(async () => {
-    mockResolve({
-      json: () => Promise.resolve(fakeResponse)
-    });
-  });
-
-  const renderedCategory = JSON.parse(
-    container.querySelector("code").innerHTML
-  );
-  expect(renderedCategory).toMatchObject(fakeCategory);
-
-  // remove the mock to ensure tests are completely isolated
-  global.fetch.mockRestore();
+  if (mockHTMLContent) {
+    const renderedCategory = JSON.parse(mockHTMLContent.innerHTML);
+    expect(renderedCategory).toMatchObject(fakeCategory);
+  } else {
+    fail(
+      `The mocked <CategoryThumbnail> has no <code> element that should contain the serialized JSON for the category! Container: ${
+        container!.innerHTML
+      }`
+    );
+  }
 });
 
 it("shows error message on fetch error", async () => {
-  jest
-    .spyOn(global, "fetch")
-    .mockImplementation(() => Promise.reject(new Error("Fetch error")));
+  fetchMock.mockRejectOnce(new Error("Fetch error"));
 
   // Use the asynchronous version of act to apply resolved promises
   await act(async () => {
     render(<Categories />, container);
   });
 
-  expect(container.innerHTML).toContain("ERROR");
+  expect(container!.innerHTML).toContain("ERROR");
+});
 
-  // remove the mock to ensure tests are completely isolated
-  global.fetch.mockRestore();
+it("caches categories", async () => {
+  const fakeCategory = require("./__mocks__/fakeCategory.json");
+  const fakeResponse = {
+    categories: [fakeCategory]
+  };
+  fetchMock.mockResponseOnce(JSON.stringify(fakeResponse));
+
+  await act(async () => {
+    render(<Categories />, container);
+  });
+
+  // shouldn't re-fetch on second render but use the cached value
+  await act(async () => {
+    render(<Categories />, container);
+  });
+
+  expect(fetchMock.mock.calls.length).toEqual(1);
 });
