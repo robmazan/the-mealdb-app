@@ -1,0 +1,17 @@
+[
+  {
+    "idMeal": 1,
+    "strMeal": "Meal 1",
+    "strMealThumb": "https://example.com/meal1.jpg"
+  },
+  {
+    "idMeal": 2,
+    "strMeal": "Meal 2",
+    "strMealThumb": "https://example.com/meal2.jpg"
+  },
+  {
+    "idMeal": 3,
+    "strMeal": "Meal 3",
+    "strMealThumb": "https://example.com/meal3.jpg"
+  }
+]
