@@ -57,6 +57,12 @@ export interface Meal {
   dateModified: string;
 }
 
+export interface MealExcerpt {
+  idMeal: number;
+  strMeal: string;
+  strMealThumb: string;
+}
+
 export interface Category {
   idCategory: number;
   strCategory: string;
@@ -78,6 +84,21 @@ export const searchByFirstLetter = (firstLetter: string): Promise<Meal[]> =>
     `https://www.themealdb.com/api/json/v1/${API_KEY}/search.php?f=${encodeURIComponent(
       firstLetter
     )}`
+  )
+    .then(res => res.json())
+    .then(res => res.meals);
+
+export const searchByCategoryName = (
+  categoryName: string,
+  signal?: AbortSignal
+): Promise<MealExcerpt[]> =>
+  fetch(
+    `https://www.themealdb.com/api/json/v1/${API_KEY}/filter.php?c=${encodeURIComponent(
+      categoryName
+    )}`,
+    {
+      ...(signal ? { signal } : {})
+    }
   )
     .then(res => res.json())
     .then(res => res.meals);

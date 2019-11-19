@@ -1,0 +1,18 @@
+@import "../shared/settings.core";
+
+$thumbnailImageWidth: 180px;
+
+.pageTitle {
+  text-align: center;
+  font-family: get-font("lobster");
+  font-weight: normal;
+}
+.list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.listItem {
+  list-style-type: none;
+  width: $thumbnailImageWidth + 40px;
+}

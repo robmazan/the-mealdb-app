@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Category, fetchCategories } from "../api/theMealDb";
-import CategoryThumbnail from "./CategoryThumbnail";
+import Thumbnail from "./Thumbnail";
 import styles from "./Categories.module.scss";
 
 enum LoadingState {
@@ -14,6 +14,8 @@ const Categories: React.FC = () => {
   const [loadingState, setLoadingState] = useState<LoadingState>(
     LoadingState.PENDING
   );
+
+  document.title = "The Meal DB: Categories";
 
   useEffect(() => {
     const fetchIfNeeded = async () => {
@@ -43,7 +45,13 @@ const Categories: React.FC = () => {
         <ul className={styles.list}>
           {categories.map(category => (
             <li key={category.idCategory} className={styles.listItem}>
-              <CategoryThumbnail category={category} />
+              <Thumbnail
+                to={`/category/${category.strCategory}`}
+                label={category.strCategory}
+                tooltip={category.strCategoryDescription}
+                imgSrc={category.strCategoryThumb}
+                imgAlt={category.strCategory}
+              />
             </li>
           ))}
         </ul>

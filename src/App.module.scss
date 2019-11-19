@@ -1,11 +1,13 @@
 @import "shared/settings.core";
 
 :global body {
-  background-color: get-color('firefly');
-  color: get-color('negroni');
+  background-color: get-color("firefly");
+  color: get-color("negroni");
 }
 
 .logoText {
   font-family: get-font("pacifico");
   font-size: 5vh;
+  text-decoration: none;
+  color: get-color("negroni");
 }

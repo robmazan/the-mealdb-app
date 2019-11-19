@@ -3,12 +3,13 @@ import React from "react";
 import { render, unmountComponentAtNode } from "react-dom";
 import { act } from "react-dom/test-utils";
 import Categories from "./Categories";
+import { Category } from "../api/theMealDb";
 
 const customGlobal: GlobalWithFetchMock = global as GlobalWithFetchMock;
 customGlobal.fetch = require("jest-fetch-mock");
 const fetchMock = customGlobal.fetch;
 
-jest.mock("./CategoryThumbnail");
+jest.mock("./Thumbnail");
 
 let container: HTMLElement | null = null;
 beforeEach(() => {
@@ -40,7 +41,7 @@ it("shows loading message", async () => {
 });
 
 it("renders category", async () => {
-  const fakeCategory = require("./__mocks__/fakeCategory.json");
+  const fakeCategory: Category = require("./__mocks__/fakeCategory.json");
   const fakeResponse = {
     categories: [fakeCategory]
   };
@@ -54,10 +55,16 @@ it("renders category", async () => {
 
   if (mockHTMLContent) {
     const renderedCategory = JSON.parse(mockHTMLContent.innerHTML);
-    expect(renderedCategory).toMatchObject(fakeCategory);
+    expect(renderedCategory).toMatchObject({
+      imgAlt: fakeCategory.strCategory,
+      imgSrc: fakeCategory.strCategoryThumb,
+      label: fakeCategory.strCategory,
+      to: `/category/${fakeCategory.strCategory}`,
+      tooltip: fakeCategory.strCategoryDescription
+    });
   } else {
     fail(
-      `The mocked <CategoryThumbnail> has no <code> element that should contain the serialized JSON for the category! Container: ${
+      `The mocked <CategoryThumbnail> has no <code> element that should contain the serialized JSON for the category thumbnail props! Container: ${
         container!.innerHTML
       }`
     );

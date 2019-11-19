@@ -8,13 +8,19 @@
   color: get-color("salem");
 
   text-decoration: none;
-  font-family: get-font("pacifico");
+  font-family: get-font("lobster");
   text-align: center;
 
   padding: 10px;
   margin: 10px;
 
   border-radius: 3px;
+
+  &:focus {
+    outline-width: 3px;
+    outline-color: orange;
+    outline-style: ridge;
+  }
 }
 
 .thumb {
