@@ -1,0 +1,46 @@
+@import "../shared/settings.core";
+
+.pageTitle {
+  text-align: center;
+  font-family: get-font("lobster");
+  font-weight: normal;
+}
+.backLink {
+  color: get-color("negroni");
+  text-decoration: none;
+  font-family: get-font("lobster");
+
+  &::before {
+    content: "<";
+    font-weight: bold;
+    font-family: cursive;
+    font-size: x-large;
+  }
+}
+.ingredientList {
+  min-height: 42vmin;
+}
+.ingredientImages {
+  padding: 0;
+  display: flex;
+  list-style-type: none;
+  overflow-x: scroll;
+  box-shadow: 0 0 5px 1px;
+  border-radius: 3px;
+  margin-left: 40px;
+  margin-right: 10px;
+}
+.card {
+  max-width: 42vmin;
+  float: right;
+  padding: 10px;
+  background: white;
+  margin: 10px;
+}
+.photo {
+  box-shadow: 0 0 5px 5px gray;
+  max-width: 100%;
+}
+.listItem {
+  margin: 1em;
+}

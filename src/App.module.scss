@@ -3,6 +3,8 @@
 :global body {
   background-color: get-color("firefly");
   color: get-color("negroni");
+  max-width: 980px;
+  margin: 0 auto;
 }
 
 .header::after {

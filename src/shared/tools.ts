@@ -35,7 +35,10 @@ export const normalizeMeal = (meal: Meal): NormalizedMeal => {
     strSource,
     dateModified
   } = meal;
-  const instructions = meal.strInstructions.split("\r\n");
+  const instructions = meal.strInstructions
+    .split("\r\n")
+    .map(p => p.trim())
+    .filter(p => p.length > 0);
   const ingredients: Ingredient[] = [];
 
   for (let i = 1; i < 20; i++) {

@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
 const Categories = React.lazy(() => import("./categories/Categories"));
 const Category = React.lazy(() => import("./categories/Category"));
+const Meal = React.lazy(() => import("./meal/Meal"));
 
 const App: React.FC = () => {
   return (
@@ -23,6 +24,9 @@ const App: React.FC = () => {
             </Route>
             <Route path="/category/:categoryName">
               <Category />
+            </Route>
+            <Route path="/meal/:mealId">
+              <Meal />
             </Route>
           </Switch>
         </Suspense>
