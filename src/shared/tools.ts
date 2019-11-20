@@ -12,7 +12,7 @@ export interface NormalizedMeal {
   strDrinkAlternate: string | null;
   strCategory: string;
   strArea: string;
-  strInstructions: string;
+  instructions: string[];
   strMealThumb: string;
   strTags: string;
   strYoutube: string;
@@ -29,13 +29,13 @@ export const normalizeMeal = (meal: Meal): NormalizedMeal => {
     strDrinkAlternate,
     strCategory,
     strArea,
-    strInstructions,
     strMealThumb,
     strTags,
     strYoutube,
     strSource,
     dateModified
   } = meal;
+  const instructions = meal.strInstructions.split("\r\n");
   const ingredients: Ingredient[] = [];
 
   for (let i = 1; i < 20; i++) {
@@ -56,7 +56,7 @@ export const normalizeMeal = (meal: Meal): NormalizedMeal => {
     strDrinkAlternate,
     strCategory,
     strArea,
-    strInstructions,
+    instructions,
     strMealThumb,
     strTags,
     strYoutube,
