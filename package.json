@@ -57,6 +57,7 @@
     }
   },
   "devDependencies": {
+    "@testing-library/react-hooks": "^3.2.1",
     "@types/pretty": "^2.0.0",
     "@types/react-router-dom": "^5.1.2",
     "cross-env": "^6.0.3",
@@ -64,6 +65,7 @@
     "jest-fetch-mock": "^2.1.2",
     "lint-staged": "^9.4.3",
     "node-sass": "^4.13.0",
-    "prettier": "^1.19.1"
+    "prettier": "^1.19.1",
+    "react-test-renderer": "^16.12.0"
   }
 }

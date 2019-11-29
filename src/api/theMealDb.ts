@@ -1,6 +1,10 @@
 /* istanbul ignore file */
 // Excluding this file from coverage report, as it only contains an API wrapper,
 // without any additional logic,so testing it would be basically like testing fetch...
+import useFetch from "../shared/useFetch";
+import { useCallback } from "react";
+import { normalizeMeal, NormalizedMeal } from "../shared/tools";
+
 const API_KEY = process.env.REACT_APP_MEALDB_API_KEY || 1;
 
 export interface Meal {
@@ -73,73 +77,36 @@ export interface Category {
   [key: string]: any;
 }
 
-export const searchByName = (
-  name: string,
-  signal?: AbortSignal
-): Promise<Meal[]> =>
-  fetch(
-    `https://www.themealdb.com/api/json/v1/${API_KEY}/search.php?s=${encodeURIComponent(
-      name
-    )}`,
-    {
-      ...(signal ? { signal } : {})
-    }
-  )
-    .then(res => res.json())
-    .then(res => res.meals);
+type MealExcerptsResponse = {
+  meals: MealExcerpt[];
+};
 
-export const searchByFirstLetter = (
-  firstLetter: string,
-  signal?: AbortSignal
-): Promise<Meal[]> =>
-  fetch(
-    `https://www.themealdb.com/api/json/v1/${API_KEY}/search.php?f=${encodeURIComponent(
-      firstLetter
-    )}`,
-    {
-      ...(signal ? { signal } : {})
-    }
-  )
-    .then(res => res.json())
-    .then(res => res.meals);
-
-export const searchByCategoryName = (
-  categoryName: string,
-  signal?: AbortSignal
-): Promise<MealExcerpt[]> =>
-  fetch(
+export const useMealExcerptsOfCategory = (categoryName: string) =>
+  useFetch<MealExcerptsResponse, MealExcerpt[]>(
     `https://www.themealdb.com/api/json/v1/${API_KEY}/filter.php?c=${encodeURIComponent(
       categoryName
     )}`,
-    {
-      ...(signal ? { signal } : {})
-    }
-  )
-    .then(res => res.json())
-    .then(res => res.meals);
+    useCallback(r => r.meals, [])
+  );
 
-export const findById = (id: number, signal?: AbortSignal): Promise<Meal> =>
-  fetch(
+type MealsResponse = {
+  meals: Meal[];
+};
+
+export const useMeal = (id: number) =>
+  useFetch<MealsResponse, NormalizedMeal>(
     `https://www.themealdb.com/api/json/v1/${API_KEY}/lookup.php?i=${encodeURIComponent(
       id
     )}`,
-    {
-      ...(signal ? { signal } : {})
-    }
-  )
-    .then(res => res.json())
-    .then(res => res.meals[0]);
+    useCallback(r => normalizeMeal(r.meals[0]), [])
+  );
 
-export const fetchRandom = (signal?: AbortSignal): Promise<Meal> =>
-  fetch(`https://www.themealdb.com/api/json/v1/${API_KEY}/random.php`, {
-    ...(signal ? { signal } : {})
-  })
-    .then(res => res.json())
-    .then(res => res.meals[0]);
+type CategoryResponse = {
+  categories: Category[];
+};
 
-export const fetchCategories = (signal?: AbortSignal): Promise<Category[]> =>
-  fetch(`https://www.themealdb.com/api/json/v1/${API_KEY}/categories.php`, {
-    ...(signal ? { signal } : {})
-  })
-    .then(res => res.json())
-    .then(res => res.categories);
+export const useCategories = () =>
+  useFetch<CategoryResponse, Category[]>(
+    `https://www.themealdb.com/api/json/v1/${API_KEY}/categories.php`,
+    useCallback(r => r.categories, [])
+  );

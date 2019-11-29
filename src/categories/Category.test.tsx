@@ -1,13 +1,9 @@
-import { GlobalWithFetchMock, MockResponseInit } from "jest-fetch-mock";
 import React from "react";
 import { render, unmountComponentAtNode } from "react-dom";
 import { act } from "react-dom/test-utils";
 import { MealExcerpt } from "../api/theMealDb";
+import { LoadingState } from "../shared/useFetch";
 import Category from "./Category";
-
-const customGlobal: GlobalWithFetchMock = global as GlobalWithFetchMock;
-customGlobal.fetch = require("jest-fetch-mock");
-const fetchMock = customGlobal.fetch;
 
 jest.mock("./Thumbnail");
 
@@ -18,9 +14,18 @@ jest.mock("react-router", () => ({
   }
 }));
 
+let mockMeals: MealExcerpt[];
+let mockLoadingState: LoadingState;
+let mockError: Error | null;
+
+jest.mock("../api/theMealDb", () => ({
+  useMealExcerptsOfCategory(categoryName: string) {
+    return [mockMeals, mockLoadingState, mockError];
+  }
+}));
+
 let container: HTMLElement | null = null;
 beforeEach(() => {
-  fetchMock.resetMocks();
   container = document.createElement("div");
   document.body.appendChild(container);
 });
@@ -35,9 +40,7 @@ afterEach(() => {
 });
 
 it("shows loading message", async () => {
-  const mockPromise = new Promise<MockResponseInit>(resolve => {});
-
-  fetchMock.mockResponseOnce(() => mockPromise);
+  mockLoadingState = LoadingState.PENDING;
 
   await act(async () => {
     render(<Category />, container);
@@ -47,22 +50,20 @@ it("shows loading message", async () => {
 });
 
 it("renders meals", async () => {
-  const fakeMeals: MealExcerpt[] = require("./__mocks__/meals.json");
-  const fakeResponse = {
-    meals: fakeMeals
-  };
-  fetchMock.mockResponseOnce(JSON.stringify(fakeResponse));
+  mockMeals = require("./__mocks__/meals.json");
+  mockLoadingState = LoadingState.DONE;
 
   await act(async () => {
     render(<Category />, container);
   });
 
   const mealListItems = container!.querySelectorAll("li");
-  expect(mealListItems.length).toEqual(fakeMeals.length);
+  expect(mealListItems.length).toEqual(mockMeals.length);
 });
 
 it("shows error message on fetch error", async () => {
-  fetchMock.mockRejectOnce(new Error("Fetch error"));
+  mockError = new Error("ERROR");
+  mockLoadingState = LoadingState.ERROR;
 
   // Use the asynchronous version of act to apply resolved promises
   await act(async () => {
@@ -70,17 +71,4 @@ it("shows error message on fetch error", async () => {
   });
 
   expect(container!.innerHTML).toContain("ERROR");
-});
-
-it("doesn't crash if route param is not resolved yet", async () => {
-  const fakeMeals: MealExcerpt[] = require("./__mocks__/meals.json");
-  const fakeResponse = {
-    meals: fakeMeals
-  };
-  fetchMock.mockResponseOnce(JSON.stringify(fakeResponse));
-
-  mockCategoryName = undefined;
-  await act(async () => {
-    render(<Category />, container);
-  });
 });

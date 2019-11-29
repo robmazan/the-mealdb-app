@@ -1,19 +1,24 @@
-import { GlobalWithFetchMock, MockResponseInit } from "jest-fetch-mock";
 import React from "react";
 import { render, unmountComponentAtNode } from "react-dom";
 import { act } from "react-dom/test-utils";
-import Categories from "./Categories";
 import { Category } from "../api/theMealDb";
-
-const customGlobal: GlobalWithFetchMock = global as GlobalWithFetchMock;
-customGlobal.fetch = require("jest-fetch-mock");
-const fetchMock = customGlobal.fetch;
+import { LoadingState } from "../shared/useFetch";
+import Categories from "./Categories";
 
 jest.mock("./Thumbnail");
 
+let mockCategories: Category[];
+let mockLoadingState: LoadingState;
+let mockError: Error | null = null;
+
+jest.mock("../api/theMealDb", () => ({
+  useCategories() {
+    return [mockCategories, mockLoadingState, mockError];
+  }
+}));
+
 let container: HTMLElement | null = null;
 beforeEach(() => {
-  fetchMock.resetMocks();
   container = document.createElement("div");
   document.body.appendChild(container);
 });
@@ -25,13 +30,10 @@ afterEach(() => {
   }
   container!.remove();
   container = null;
-  localStorage.clear();
 });
 
 it("shows loading message", async () => {
-  const mockPromise = new Promise<MockResponseInit>(resolve => {});
-
-  fetchMock.mockResponseOnce(() => mockPromise);
+  mockLoadingState = LoadingState.PENDING;
 
   await act(async () => {
     render(<Categories />, container);
@@ -41,11 +43,9 @@ it("shows loading message", async () => {
 });
 
 it("renders category", async () => {
-  const fakeCategory: Category = require("./__mocks__/fakeCategory.json");
-  const fakeResponse = {
-    categories: [fakeCategory]
-  };
-  fetchMock.mockResponseOnce(JSON.stringify(fakeResponse));
+  const mockCategory = require("./__mocks__/fakeCategory.json");
+  mockCategories = [mockCategory];
+  mockLoadingState = LoadingState.DONE;
 
   await act(async () => {
     render(<Categories />, container);
@@ -56,11 +56,11 @@ it("renders category", async () => {
   if (mockHTMLContent) {
     const renderedCategory = JSON.parse(mockHTMLContent.innerHTML);
     expect(renderedCategory).toMatchObject({
-      imgAlt: fakeCategory.strCategory,
-      imgSrc: fakeCategory.strCategoryThumb,
-      label: fakeCategory.strCategory,
-      to: `/category/${fakeCategory.strCategory}`,
-      tooltip: fakeCategory.strCategoryDescription
+      imgAlt: mockCategory.strCategory,
+      imgSrc: mockCategory.strCategoryThumb,
+      label: mockCategory.strCategory,
+      to: `/category/${mockCategory.strCategory}`,
+      tooltip: mockCategory.strCategoryDescription
     });
   } else {
     fail(
@@ -72,39 +72,13 @@ it("renders category", async () => {
 });
 
 it("shows error message on fetch error", async () => {
-  fetchMock.mockRejectOnce(new Error("Fetch error"));
+  mockError = new Error("Fetch error");
+  mockLoadingState = LoadingState.ERROR;
 
   // Use the asynchronous version of act to apply resolved promises
   await act(async () => {
     render(<Categories />, container);
   });
 
-  expect(container!.innerHTML).toContain("ERROR");
-});
-
-it("caches categories", async () => {
-  const fakeCategory = require("./__mocks__/fakeCategory.json");
-  const fakeResponse = {
-    categories: [fakeCategory]
-  };
-  fetchMock.mockResponseOnce(JSON.stringify(fakeResponse));
-
-  await act(async () => {
-    render(<Categories />, container);
-  });
-
-  // For testing re-fetch we need a new container, otherwise
-  // ReactDOM wouldn't re-render as the component output is the same
-  const otherContainer = document.createElement("div");
-  document.body.appendChild(otherContainer);
-
-  // shouldn't re-fetch on second render but use the cached value
-  await act(async () => {
-    render(<Categories />, otherContainer);
-  });
-
-  expect(fetchMock.mock.calls.length).toEqual(1);
-
-  unmountComponentAtNode(otherContainer);
-  otherContainer.remove();
+  expect(container!.innerHTML).toContain("error");
 });
