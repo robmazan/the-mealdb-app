@@ -1,18 +1,14 @@
-import { GlobalWithFetchMock } from "jest-fetch-mock";
 import React from "react";
 import { render, unmountComponentAtNode } from "react-dom";
 import { act } from "react-dom/test-utils";
-import * as api from "../api/theMealDb";
+import { NormalizedMeal, normalizeMeal } from "../shared/tools";
+import { LoadingState } from "../shared/useFetch";
 import Meal from "./Meal";
 
-const customGlobal: GlobalWithFetchMock = global as GlobalWithFetchMock;
-customGlobal.fetch = require("jest-fetch-mock");
-const fetchMock = customGlobal.fetch;
-
-let mockMealId: string | undefined;
+let mockMealIdParam = "42";
 jest.mock("react-router", () => ({
   useParams() {
-    return { mealId: mockMealId };
+    return { mealId: mockMealIdParam };
   }
 }));
 
@@ -22,10 +18,20 @@ jest.mock("react-router-dom", () => ({
     .mockImplementation(props => <code>{JSON.stringify(props)}</code>)
 }));
 
+let mockMeal: NormalizedMeal = normalizeMeal(
+  require("./__mocks__/mealDetails.json").meals[0]
+);
+let mockLoadingState: LoadingState;
+let mockError: Error | null = null;
+
+jest.mock("../api/theMealDb", () => ({
+  useMeal(mealId: number) {
+    return [mockMeal, mockLoadingState, mockError];
+  }
+}));
+
 let container: HTMLElement | null = null;
 beforeEach(() => {
-  fetchMock.resetMocks();
-  mockMealId = "42";
   container = document.createElement("div");
   document.body.appendChild(container);
 });
@@ -40,8 +46,7 @@ afterEach(() => {
 });
 
 it("renders the meal details properly", async () => {
-  const fakeResponse: api.Meal = require("./__mocks__/mealDetails.json");
-  fetchMock.mockResponseOnce(JSON.stringify(fakeResponse));
+  mockLoadingState = LoadingState.DONE;
 
   await act(async () => {
     render(<Meal />, container);
@@ -53,11 +58,22 @@ it("renders the meal details properly", async () => {
 });
 
 it("renders loading message while meal is not loaded", async () => {
-  mockMealId = undefined;
+  mockLoadingState = LoadingState.PENDING;
 
   await act(async () => {
     render(<Meal />, container);
   });
 
   expect(container!.innerHTML).toContain("Loading");
+});
+
+it("shows error message on fetch error", async () => {
+  mockError = new Error("ERROR");
+  mockLoadingState = LoadingState.ERROR;
+
+  await act(async () => {
+    render(<Meal />, container);
+  });
+
+  expect(container!.innerHTML).toContain("ERROR");
 });

@@ -1,43 +1,13 @@
-import React, { useEffect, useState } from "react";
-import { Category, fetchCategories } from "../api/theMealDb";
-import Thumbnail from "./Thumbnail";
+import React from "react";
+import { useCategories } from "../api/theMealDb";
+import { LoadingState } from "../shared/useFetch";
 import styles from "./Categories.module.scss";
-
-enum LoadingState {
-  PENDING,
-  ERROR,
-  DONE
-}
+import Thumbnail from "./Thumbnail";
 
 const Categories: React.FC = () => {
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [loadingState, setLoadingState] = useState<LoadingState>(
-    LoadingState.PENDING
-  );
+  const [categories, loadingState, loadError] = useCategories();
 
   document.title = "The Meal DB: Categories";
-
-  useEffect(() => {
-    const fetchIfNeeded = async () => {
-      let storedCategories = localStorage.getItem("storedCategories");
-      let categories: Category[] = [];
-
-      if (storedCategories) {
-        categories = JSON.parse(storedCategories);
-        setLoadingState(LoadingState.DONE);
-      } else {
-        try {
-          categories = await fetchCategories();
-          localStorage.setItem("storedCategories", JSON.stringify(categories));
-          setLoadingState(LoadingState.DONE);
-        } catch {
-          setLoadingState(LoadingState.ERROR);
-        }
-      }
-      setCategories(categories);
-    };
-    fetchIfNeeded();
-  }, []);
 
   switch (loadingState) {
     case LoadingState.DONE:
@@ -45,7 +15,7 @@ const Categories: React.FC = () => {
         <>
           <h2 className={styles.pageTitle}>Categories</h2>
           <ul className={styles.list}>
-            {categories.map(category => (
+            {categories!.map(category => (
               <li key={category.idCategory} className={styles.listItem}>
                 <Thumbnail
                   to={`/category/${category.strCategory}`}
@@ -63,7 +33,7 @@ const Categories: React.FC = () => {
       );
 
     case LoadingState.ERROR:
-      return <div>ERROR: cannot load categories!</div>;
+      return <div>{loadError!.message}</div>;
 
     case LoadingState.PENDING:
       return <div>Loading categories...</div>;
