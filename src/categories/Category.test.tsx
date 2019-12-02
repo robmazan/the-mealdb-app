@@ -61,14 +61,12 @@ it("renders meals", async () => {
   expect(mealListItems.length).toEqual(mockMeals.length);
 });
 
-it("shows error message on fetch error", async () => {
-  mockError = new Error("ERROR");
+it("throws error on fetch error", () => {
+  mockError = new Error("Fetch error");
   mockLoadingState = LoadingState.ERROR;
+  const spy = jest.spyOn(console, "error").mockImplementationOnce(() => {});
 
-  // Use the asynchronous version of act to apply resolved promises
-  await act(async () => {
-    render(<Category />, container);
-  });
+  expect(() => render(<Category />, container)).toThrowError(mockError);
 
-  expect(container!.innerHTML).toContain("ERROR");
+  spy.mockRestore();
 });

@@ -33,7 +33,7 @@ const Categories: React.FC = () => {
       );
 
     case LoadingState.ERROR:
-      return <div>{loadError!.message}</div>;
+      throw loadError;
 
     case LoadingState.PENDING:
       return <div>Loading categories...</div>;

@@ -9,7 +9,7 @@ jest.mock("./Thumbnail");
 
 let mockCategories: Category[];
 let mockLoadingState: LoadingState;
-let mockError: Error | null = null;
+let mockError: Error | undefined;
 
 jest.mock("../api/theMealDb", () => ({
   useCategories() {
@@ -71,14 +71,12 @@ it("renders category", async () => {
   }
 });
 
-it("shows error message on fetch error", async () => {
+it("throws error on fetch error", () => {
   mockError = new Error("Fetch error");
   mockLoadingState = LoadingState.ERROR;
+  const spy = jest.spyOn(console, "error").mockImplementationOnce(() => {});
 
-  // Use the asynchronous version of act to apply resolved promises
-  await act(async () => {
-    render(<Categories />, container);
-  });
+  expect(() => render(<Categories />, container)).toThrowError(mockError);
 
-  expect(container!.innerHTML).toContain("error");
+  spy.mockRestore();
 });
