@@ -4,6 +4,8 @@ import styles from "./Category.module.scss";
 import Thumbnail from "./Thumbnail";
 import { LoadingState } from "../shared/useFetch";
 import { useMealExcerptsOfCategory } from "../api/theMealDb";
+import Center from "../shared/Center";
+import Spinner from "../shared/Spinner";
 
 const Category: React.FC = () => {
   const { categoryName } = useParams<{ categoryName: string }>();
@@ -39,7 +41,11 @@ const Category: React.FC = () => {
       throw loadError;
 
     case LoadingState.PENDING:
-      return <div>Loading category...</div>;
+      return (
+        <Center>
+          <Spinner />
+        </Center>
+      );
   }
 };
 

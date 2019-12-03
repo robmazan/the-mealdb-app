@@ -46,7 +46,7 @@ it("shows loading message", async () => {
     render(<Category />, container);
   });
 
-  expect(container!.innerHTML).toContain("Loading");
+  expect(container!.innerHTML).toContain("Spinner");
 });
 
 it("renders meals", async () => {

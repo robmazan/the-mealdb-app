@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import { useMeal } from "../api/theMealDb";
 import styles from "./Meal.module.scss";
 import { LoadingState } from "../shared/useFetch";
+import Center from "../shared/Center";
+import Spinner from "../shared/Spinner";
 
 const Meal: React.FC = () => {
   const { mealId } = useParams<{ mealId: string }>();
@@ -74,7 +76,11 @@ const Meal: React.FC = () => {
       throw loadError;
 
     case LoadingState.PENDING:
-      return <div>Loading meal...</div>;
+      return (
+        <Center>
+          <Spinner />
+        </Center>
+      );
   }
 };
 

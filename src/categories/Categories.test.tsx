@@ -39,7 +39,7 @@ it("shows loading message", async () => {
     render(<Categories />, container);
   });
 
-  expect(container!.innerHTML).toContain("Loading");
+  expect(container!.innerHTML).toContain("Spinner");
 });
 
 it("renders category", async () => {

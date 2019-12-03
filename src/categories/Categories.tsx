@@ -3,6 +3,8 @@ import { useCategories } from "../api/theMealDb";
 import { LoadingState } from "../shared/useFetch";
 import styles from "./Categories.module.scss";
 import Thumbnail from "./Thumbnail";
+import Spinner from "../shared/Spinner";
+import Center from "../shared/Center";
 
 const Categories: React.FC = () => {
   const [categories, loadingState, loadError] = useCategories();
@@ -36,7 +38,11 @@ const Categories: React.FC = () => {
       throw loadError;
 
     case LoadingState.PENDING:
-      return <div>Loading categories...</div>;
+      return (
+        <Center>
+          <Spinner />
+        </Center>
+      );
   }
 };
 

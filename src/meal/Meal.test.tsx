@@ -64,7 +64,7 @@ it("renders loading message while meal is not loaded", async () => {
     render(<Meal />, container);
   });
 
-  expect(container!.innerHTML).toContain("Loading");
+  expect(container!.innerHTML).toContain("Spinner");
 });
 
 it("throws error on fetch error", () => {
