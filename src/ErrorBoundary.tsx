@@ -1,4 +1,5 @@
 import React from "react";
+import styles from "./ErrorBoundary.module.scss";
 
 class ErrorBoundary extends React.Component<{}, { error: Error | undefined }> {
   constructor(props: any) {
@@ -12,7 +13,16 @@ class ErrorBoundary extends React.Component<{}, { error: Error | undefined }> {
 
   render() {
     if (this.state.error) {
-      return <h1>{this.state.error.message}</h1>;
+      return (
+        <div className={styles.wrapper}>
+          <section className={styles.error}>
+            <h1 className={styles.errorTitle}>Error</h1>
+            <p className={styles.errorDescription}>
+              {this.state.error.name}: {this.state.error.message}
+            </p>
+          </section>
+        </div>
+      );
     }
 
     return this.props.children;
