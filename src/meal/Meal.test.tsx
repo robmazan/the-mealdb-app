@@ -64,16 +64,15 @@ it("renders loading message while meal is not loaded", async () => {
     render(<Meal />, container);
   });
 
-  expect(container!.innerHTML).toContain("Loading");
+  expect(container!.innerHTML).toContain("Spinner");
 });
 
-it("shows error message on fetch error", async () => {
-  mockError = new Error("ERROR");
+it("throws error on fetch error", () => {
+  mockError = new Error("Fetch error");
   mockLoadingState = LoadingState.ERROR;
+  const spy = jest.spyOn(console, "error").mockImplementationOnce(() => {});
 
-  await act(async () => {
-    render(<Meal />, container);
-  });
+  expect(() => render(<Meal />, container)).toThrowError(mockError);
 
-  expect(container!.innerHTML).toContain("ERROR");
+  spy.mockRestore();
 });

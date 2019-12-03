@@ -4,10 +4,14 @@ import styles from "./Category.module.scss";
 import Thumbnail from "./Thumbnail";
 import { LoadingState } from "../shared/useFetch";
 import { useMealExcerptsOfCategory } from "../api/theMealDb";
+import Center from "../shared/Center";
+import Spinner from "../shared/Spinner";
 
 const Category: React.FC = () => {
   const { categoryName } = useParams<{ categoryName: string }>();
-  const [meals, loadingState, error] = useMealExcerptsOfCategory(categoryName);
+  const [meals, loadingState, loadError] = useMealExcerptsOfCategory(
+    categoryName
+  );
 
   document.title = `The Meal DB: ${categoryName}`;
 
@@ -34,10 +38,14 @@ const Category: React.FC = () => {
       );
 
     case LoadingState.ERROR:
-      return <div>{error!.message}</div>;
+      throw loadError;
 
     case LoadingState.PENDING:
-      return <div>Loading category...</div>;
+      return (
+        <Center>
+          <Spinner />
+        </Center>
+      );
   }
 };
 

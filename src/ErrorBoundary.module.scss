@@ -1,0 +1,20 @@
+.error {
+  background-color: white;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0 0 5px 2px gray;
+  max-width: 600px;
+  min-width: 300px;
+}
+
+.errorTitle {
+  margin: 0;
+  display: block;
+  border-bottom: 1px solid gray;
+  border-bottom-style: ridge;
+  color: tomato;
+}
+
+.errorDescription {
+  color: gray;
+}
