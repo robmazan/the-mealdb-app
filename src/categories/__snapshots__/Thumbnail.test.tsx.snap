@@ -1,0 +1,32 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders without crashing 1`] = `
+<Link
+  className="link"
+  title="tooltip"
+  to="/path/to"
+>
+  <img
+    alt="Alt"
+    className="thumb"
+    height="100px"
+    src="https://example.com/img.jpg"
+    width="100px"
+  />
+  Label
+</Link>
+`;
+
+exports[`renders without crashing whithout optional props 1`] = `
+<Link
+  className="link"
+  to="/path/to"
+>
+  <img
+    alt="Alt"
+    className="thumb"
+    src="https://example.com/img.jpg"
+  />
+  Label
+</Link>
+`;

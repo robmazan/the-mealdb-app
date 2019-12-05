@@ -1,0 +1,29 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders category 1`] = `
+<Fragment>
+  <h2
+    className="pageTitle"
+  >
+    Categories
+  </h2>
+  <ul
+    className="list"
+  >
+    <li
+      className="listItem"
+      key="1"
+    >
+      <Thumbnail
+        imgAlt="Mock category"
+        imgHeight={125}
+        imgSrc="https://example.com/thumb.jpg"
+        imgWidth={200}
+        label="Mock category"
+        to="/category/Mock category"
+        tooltip="Mock description"
+      />
+    </li>
+  </ul>
+</Fragment>
+`;

@@ -1,0 +1,240 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders the meal details properly 1`] = `
+<Fragment>
+  <Link
+    className="backLink"
+    to="/category/Chicken"
+  >
+    Back to category
+  </Link>
+  <h2
+    className="pageTitle"
+  >
+    Teriyaki Chicken Casserole
+  </h2>
+  <div
+    className="card"
+  >
+    <img
+      alt="Teriyaki Chicken Casserole"
+      className="photo"
+      src="https://www.themealdb.com/images/media/meals/wvpsxx1468256321.jpg"
+    />
+  </div>
+  <h3>
+    Ingredients
+  </h3>
+  <ul
+    className="ingredientList"
+  >
+    <li
+      className="listItem"
+      key="ing_52772_0"
+    >
+      3/4 cup
+       
+      soy sauce
+    </li>
+    <li
+      className="listItem"
+      key="ing_52772_1"
+    >
+      1/2 cup
+       
+      water
+    </li>
+    <li
+      className="listItem"
+      key="ing_52772_2"
+    >
+      1/4 cup
+       
+      brown sugar
+    </li>
+    <li
+      className="listItem"
+      key="ing_52772_3"
+    >
+      1/2 teaspoon
+       
+      ground ginger
+    </li>
+    <li
+      className="listItem"
+      key="ing_52772_4"
+    >
+      1/2 teaspoon
+       
+      minced garlic
+    </li>
+    <li
+      className="listItem"
+      key="ing_52772_5"
+    >
+      4 Tablespoons
+       
+      cornstarch
+    </li>
+    <li
+      className="listItem"
+      key="ing_52772_6"
+    >
+      2
+       
+      chicken breasts
+    </li>
+    <li
+      className="listItem"
+      key="ing_52772_7"
+    >
+      1 (12 oz.)
+       
+      stir-fry vegetables
+    </li>
+    <li
+      className="listItem"
+      key="ing_52772_8"
+    >
+      3 cups
+       
+      brown rice
+    </li>
+  </ul>
+  <ul
+    className="ingredientImages"
+  >
+    <li
+      className="listItem"
+      key="iim_52772_0"
+      title="soy sauce"
+    >
+      <img
+        alt="soy sauce"
+        src="https://www.themealdb.com/images/ingredients/soy sauce-Small.png"
+      />
+    </li>
+    <li
+      className="listItem"
+      key="iim_52772_1"
+      title="water"
+    >
+      <img
+        alt="water"
+        src="https://www.themealdb.com/images/ingredients/water-Small.png"
+      />
+    </li>
+    <li
+      className="listItem"
+      key="iim_52772_2"
+      title="brown sugar"
+    >
+      <img
+        alt="brown sugar"
+        src="https://www.themealdb.com/images/ingredients/brown sugar-Small.png"
+      />
+    </li>
+    <li
+      className="listItem"
+      key="iim_52772_3"
+      title="ground ginger"
+    >
+      <img
+        alt="ground ginger"
+        src="https://www.themealdb.com/images/ingredients/ground ginger-Small.png"
+      />
+    </li>
+    <li
+      className="listItem"
+      key="iim_52772_4"
+      title="minced garlic"
+    >
+      <img
+        alt="minced garlic"
+        src="https://www.themealdb.com/images/ingredients/minced garlic-Small.png"
+      />
+    </li>
+    <li
+      className="listItem"
+      key="iim_52772_5"
+      title="cornstarch"
+    >
+      <img
+        alt="cornstarch"
+        src="https://www.themealdb.com/images/ingredients/cornstarch-Small.png"
+      />
+    </li>
+    <li
+      className="listItem"
+      key="iim_52772_6"
+      title="chicken breasts"
+    >
+      <img
+        alt="chicken breasts"
+        src="https://www.themealdb.com/images/ingredients/chicken breasts-Small.png"
+      />
+    </li>
+    <li
+      className="listItem"
+      key="iim_52772_7"
+      title="stir-fry vegetables"
+    >
+      <img
+        alt="stir-fry vegetables"
+        src="https://www.themealdb.com/images/ingredients/stir-fry vegetables-Small.png"
+      />
+    </li>
+    <li
+      className="listItem"
+      key="iim_52772_8"
+      title="brown rice"
+    >
+      <img
+        alt="brown rice"
+        src="https://www.themealdb.com/images/ingredients/brown rice-Small.png"
+      />
+    </li>
+  </ul>
+  <h3>
+    Instructions
+  </h3>
+  <ol>
+    <li
+      className="listItem"
+      key="ins_52772_0"
+    >
+      Preheat oven to 350° F. Spray a 9x13-inch baking pan with non-stick spray.
+    </li>
+    <li
+      className="listItem"
+      key="ins_52772_1"
+    >
+      Combine soy sauce, ½ cup water, brown sugar, ginger and garlic in a small saucepan and cover. Bring to a boil over medium heat. Remove lid and cook for one minute once boiling.
+    </li>
+    <li
+      className="listItem"
+      key="ins_52772_2"
+    >
+      Meanwhile, stir together the corn starch and 2 tablespoons of water in a separate dish until smooth. Once sauce is boiling, add mixture to the saucepan and stir to combine. Cook until the sauce starts to thicken then remove from heat.
+    </li>
+    <li
+      className="listItem"
+      key="ins_52772_3"
+    >
+      Place the chicken breasts in the prepared pan. Pour one cup of the sauce over top of chicken. Place chicken in oven and bake 35 minutes or until cooked through. Remove from oven and shred chicken in the dish using two forks.
+    </li>
+    <li
+      className="listItem"
+      key="ins_52772_4"
+    >
+      *Meanwhile, steam or cook the vegetables according to package directions.
+    </li>
+    <li
+      className="listItem"
+      key="ins_52772_5"
+    >
+      Add the cooked vegetables and rice to the casserole dish with the chicken. Add most of the remaining sauce, reserving a bit to drizzle over the top when serving. Gently toss everything together in the casserole dish until combined. Return to oven and cook 15 minutes. Remove from oven and let stand 5 minutes before serving. Drizzle each serving with remaining sauce. Enjoy!
+    </li>
+  </ol>
+</Fragment>
+`;

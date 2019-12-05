@@ -1,11 +1,10 @@
+import { shallow } from "enzyme";
 import React from "react";
-import { render, unmountComponentAtNode } from "react-dom";
 import { act } from "react-dom/test-utils";
 import { MealExcerpt } from "../api/theMealDb";
+import Spinner from "../shared/Spinner";
 import { LoadingState } from "../shared/useFetch";
 import Category from "./Category";
-
-jest.mock("./Thumbnail");
 
 let mockCategoryName: string | undefined = "categoryName";
 jest.mock("react-router", () => ({
@@ -24,41 +23,29 @@ jest.mock("../api/theMealDb", () => ({
   }
 }));
 
-let container: HTMLElement | null = null;
-beforeEach(() => {
-  container = document.createElement("div");
-  document.body.appendChild(container);
-});
-
-afterEach(() => {
-  // cleanup on exiting
-  if (container) {
-    unmountComponentAtNode(container);
-  }
-  container!.remove();
-  container = null;
-});
-
 it("shows loading message", async () => {
   mockLoadingState = LoadingState.PENDING;
 
+  let wrapper;
+
   await act(async () => {
-    render(<Category />, container);
+    wrapper = shallow(<Category />);
   });
 
-  expect(container!.innerHTML).toContain("Spinner");
+  expect(wrapper).toContainReact(<Spinner />);
 });
 
 it("renders meals", async () => {
   mockMeals = require("./__mocks__/meals.json");
   mockLoadingState = LoadingState.DONE;
 
+  let wrapper;
+
   await act(async () => {
-    render(<Category />, container);
+    wrapper = shallow(<Category />);
   });
 
-  const mealListItems = container!.querySelectorAll("li");
-  expect(mealListItems.length).toEqual(mockMeals.length);
+  expect(wrapper).toMatchSnapshot();
 });
 
 it("throws error on fetch error", () => {
@@ -66,7 +53,7 @@ it("throws error on fetch error", () => {
   mockLoadingState = LoadingState.ERROR;
   const spy = jest.spyOn(console, "error").mockImplementationOnce(() => {});
 
-  expect(() => render(<Category />, container)).toThrowError(mockError);
+  expect(() => shallow(<Category />)).toThrowError(mockError);
 
   spy.mockRestore();
 });

@@ -1,11 +1,10 @@
+import { shallow } from "enzyme";
 import React from "react";
-import { render, unmountComponentAtNode } from "react-dom";
 import { act } from "react-dom/test-utils";
 import { Category } from "../api/theMealDb";
+import Spinner from "../shared/Spinner";
 import { LoadingState } from "../shared/useFetch";
 import Categories from "./Categories";
-
-jest.mock("./Thumbnail");
 
 let mockCategories: Category[];
 let mockLoadingState: LoadingState;
@@ -17,29 +16,15 @@ jest.mock("../api/theMealDb", () => ({
   }
 }));
 
-let container: HTMLElement | null = null;
-beforeEach(() => {
-  container = document.createElement("div");
-  document.body.appendChild(container);
-});
-
-afterEach(() => {
-  // cleanup on exiting
-  if (container) {
-    unmountComponentAtNode(container);
-  }
-  container!.remove();
-  container = null;
-});
-
 it("shows loading message", async () => {
   mockLoadingState = LoadingState.PENDING;
+  let wrapper;
 
   await act(async () => {
-    render(<Categories />, container);
+    wrapper = shallow(<Categories />);
   });
 
-  expect(container!.innerHTML).toContain("Spinner");
+  expect(wrapper).toContainReact(<Spinner />);
 });
 
 it("renders category", async () => {
@@ -47,28 +32,13 @@ it("renders category", async () => {
   mockCategories = [mockCategory];
   mockLoadingState = LoadingState.DONE;
 
+  let wrapper;
+
   await act(async () => {
-    render(<Categories />, container);
+    wrapper = shallow(<Categories />);
   });
 
-  const mockHTMLContent = container!.querySelector("code");
-
-  if (mockHTMLContent) {
-    const renderedCategory = JSON.parse(mockHTMLContent.innerHTML);
-    expect(renderedCategory).toMatchObject({
-      imgAlt: mockCategory.strCategory,
-      imgSrc: mockCategory.strCategoryThumb,
-      label: mockCategory.strCategory,
-      to: `/category/${mockCategory.strCategory}`,
-      tooltip: mockCategory.strCategoryDescription
-    });
-  } else {
-    fail(
-      `The mocked <CategoryThumbnail> has no <code> element that should contain the serialized JSON for the category thumbnail props! Container: ${
-        container!.innerHTML
-      }`
-    );
-  }
+  expect(wrapper).toMatchSnapshot();
 });
 
 it("throws error on fetch error", () => {
@@ -76,7 +46,7 @@ it("throws error on fetch error", () => {
   mockLoadingState = LoadingState.ERROR;
   const spy = jest.spyOn(console, "error").mockImplementationOnce(() => {});
 
-  expect(() => render(<Categories />, container)).toThrowError(mockError);
+  expect(() => shallow(<Categories />)).toThrowError(mockError);
 
   spy.mockRestore();
 });
