@@ -1,0 +1,54 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders meals 1`] = `
+<Fragment>
+  <h1
+    className="pageTitle"
+  >
+    categoryName
+  </h1>
+  <ul
+    className="list"
+  >
+    <li
+      className="listItem"
+      key="1"
+    >
+      <Thumbnail
+        imgAlt="Meal 1"
+        imgHeight={180}
+        imgSrc="https://example.com/meal1.jpg"
+        imgWidth={180}
+        label="Meal 1"
+        to="/meal/1"
+      />
+    </li>
+    <li
+      className="listItem"
+      key="2"
+    >
+      <Thumbnail
+        imgAlt="Meal 2"
+        imgHeight={180}
+        imgSrc="https://example.com/meal2.jpg"
+        imgWidth={180}
+        label="Meal 2"
+        to="/meal/2"
+      />
+    </li>
+    <li
+      className="listItem"
+      key="3"
+    >
+      <Thumbnail
+        imgAlt="Meal 3"
+        imgHeight={180}
+        imgSrc="https://example.com/meal3.jpg"
+        imgWidth={180}
+        label="Meal 3"
+        to="/meal/3"
+      />
+    </li>
+  </ul>
+</Fragment>
+`;
